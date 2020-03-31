@@ -70,8 +70,6 @@ class ModulesAuthController extends HubController
         if ($resources->count()>0) {
             $mediaFilter = $resources->filter(function ($resource, $key) use($page, $module, $type) {
                 return in_array($page, $resource->resource_page)  && in_array($module, $resource->resource_module) && $resource->resource_type==$type;
-                //return ($resource->resource_module==$module || $resource->resource_module=="all");
-                //return $resource->resource_type==$type;
             });
             if ($mediaFilter->count()>0) {
                 $media = $mediaFilter->random();

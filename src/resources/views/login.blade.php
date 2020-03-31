@@ -24,7 +24,7 @@
                             <!-- {{ $page['login_product_name'] }} -->
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Email address</label>
+                            <label class="form-label">Your Email address</label>
                             <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
                             id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
                             @if ($errors->has('email'))
@@ -33,7 +33,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">
-                                Password
+                                Your Password
                                 <a href="{{ url('/forgot-password') }}" class="float-right small">Forgot Password?</a>
                             </label>
                             <input type="password" class="form-control" id="password" name="password"

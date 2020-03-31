@@ -36,6 +36,21 @@ return [
             ],
             [
                 'partner_id' => '0',
+                'resource_uuid' => 'b03447ca-2ab1-46f5-9b49-54a1ba50e900',
+                'resource_page' => ['register'],
+                'resource_module' => ['people'],
+                'resource_type' => 'image',
+                'resource_subtype' => '',
+                'resource_link' => '#',
+                'resource_image' => 'sample-07.jpg',
+                'resource_video' => '',
+                'resource_title' => 'Power HR Tools',
+                'resource_description' => 'Manage human resource easily and efficiently',
+                'resource_button' => '',
+                'resource_button_link' => 'https://dorcas.io'
+            ],
+            [
+                'partner_id' => '0',
                 'resource_uuid' => 'b03447ca-2ab1-46f5-9b49-54a1ba50e902',
                 'resource_page' => ['login'],
                 'resource_module' => ['all'],
