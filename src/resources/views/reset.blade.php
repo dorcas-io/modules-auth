@@ -40,7 +40,7 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Password</label>
+                            <label class="form-label">Confirm Password</label>
                             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
                                    placeholder="ConfirmPassword" required>
                             @if ($errors->has('password_confirmation'))

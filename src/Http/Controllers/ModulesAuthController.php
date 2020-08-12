@@ -4,7 +4,7 @@ namespace Dorcas\ModulesAuth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Dorcas\ModulesLibrary\Models\ModulesAuth;
+use Dorcas\ModulesAuth\Models\ModulesAuth;
 use App\Dorcas\Hub\Utilities\UiResponse\UiResponse;
 use App\Http\Controllers\HomeController;
 use Hostville\Dorcas\Sdk;
@@ -14,22 +14,11 @@ use App\Http\Controllers\HubController;
 use Illuminate\Support\Facades\Cookie;
 use GuzzleHttp\Exception\ServerException;
 use Dorcas\ModulesAssistant\Http\Controllers\ModulesAssistantController as Assistant;
+use Illuminate\Support\Facades\Redis;
 
 
 class ModulesAuthController extends HubController
 {
-
-    const LIBRARY_CATEGORIES = [
-        0 => 'General',
-        1 => 'Health Sector'
-    ];
-
-    const LIBRARY_SUBCATEGORIES = [
-        0 => 'For Everyone',
-        1 => 'For Businesses',
-        2 => 'For Customers',
-        3 => 'For Employees'
-    ];
 
     public function __construct()
     {
@@ -95,6 +84,18 @@ class ModulesAuthController extends HubController
 
         return $mediaArray;
 
+    }
+
+    public function offloadMemoryConfig(Request $request, Sdk $sdk)
+    {
+        Redis::set('posts.all', $posts);
+        $this->data['company'] = $company = $request->user()->company(true, true);
+        $configuration = !empty($company->extra_data) ? $company->extra_data : [];
+    }
+
+    public function uploadMemoryConfig(Request $request, Sdk $sdk)
+    {
+        Redis::get('posts.all');
     }
 
 }

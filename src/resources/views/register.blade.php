@@ -19,9 +19,24 @@
                     {{ csrf_field() }}
                     <div class="card-body p-6">
                         <div class="card-title">Get Started with {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }}</div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="form-label">Which Business Features Do You Need?</label>
+                                <select name="feature_select" id="feature_select" required="" class="form-control custom-select">
+                                  <option value="" data-data='{"image": "{{ cdn('images/flags/br.svg') }}"}' selected>Please Select...</option>
+                                  <option value="selling_online" data-data='{"image": "{{ cdn('images/flags/br.svg') }}"}'>Selling Online</option>
+                                  <option value="payroll" data-data='{"image": "{{ cdn('images/flags/cz.svg') }}"}'>Payroll</option>
+                                  <option value="all" data-data='{"image": "{{ cdn('images/flags/de.svg') }}"}'>Everything!</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label class="form-label">Your Business Name</label>
+                                <label class="form-label">Enter Your Business Name</label>
                                 <input type="text" class="form-control {{ $errors->has('company') ? 'is-invalid' : '' }}" name="company" id="company" value="{{ old('company') }}"
                                 placeholder="Business Name" maxlength="30" required>
                                 @if ($errors->has('company'))
@@ -29,7 +44,7 @@
                                 @endif
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="form-label">Your Mobile Number</label>
+                                <label class="form-label">Provide Your Mobile Number</label>
                                 <input type="text" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" name="phone" id="phone"
                                 placeholder="Mobile Phone" maxlength="30" value="{{ old('phone') }}" required>
                                 @if ($errors->has('phone'))
@@ -39,7 +54,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label class="form-label">Your Email Address</label>
+                                <label class="form-label">Provide Your Email Address</label>
                                 <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
                                 id="email" name="email" aria-describedby="emailHelp" placeholder="Enter Email"
                                 maxlength="80" value="{{ old('email') }}" required>
@@ -60,7 +75,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label class="form-label">Your First Name</label>
+                                <label class="form-label">Enter Your First Name</label>
                                 <input type="text" class="form-control {{ $errors->has('firstname') ? 'is-invalid' : '' }}" name="firstname" id="firstname" value="{{ old('firstname') }}"
                                 placeholder="First Name" maxlength="30" required>
                                 @if ($errors->has('firstname'))
@@ -68,7 +83,7 @@
                                 @endif
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="form-label">Your Last Name</label>
+                                <label class="form-label">Enter Your Last Name</label>
                                 <input type="text" class="form-control {{ $errors->has('lastname') ? 'is-invalid' : '' }}" name="lastname" id="lastname"
                                 placeholder="Last Name" maxlength="30" value="{{ old('lastname') }}" required>
                                 @if ($errors->has('lastname'))
@@ -76,11 +91,21 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="custom-switch">
+                                    <input type="checkbox" name="dorcas_terms_check" id="dorcas_terms_check" value="dorcas_terms_agree" class="custom-switch-input" onchange="vm.toggleTerms()">
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">I agree with <a href="#" target="_blank">the terms and conditions</a></span>
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="form-footer">
                             <input type="hidden" name="plan" value="{{ $plan }}" />
                             <input type="hidden" name="plan_type" value="{{ $plan_type }}" />
                             <input type="hidden" name="module" value="{{ $module }}" />
-                            <button type="submit" class="btn btn-primary btn-block">Create Hub Account</button>
+                            <button type="submit" id="register_page_submit" class="btn btn-primary btn-block">Create Hub Account</button>
                         </div>
                     </div>
                 </form>
@@ -145,19 +170,53 @@
             data: {
                 authMedia: {!! json_encode(!empty($authMedia) ? $authMedia : []) !!},
                 group: {name: '', description: ''},
+                accept_terms: false
             },
             computed: {
 
             },
             mounted: function () {
+                $('#register_page_submit').prop('disabled', true);
                //console.log(this.authMedia);
            },
             methods: {
                 createGroup: function () {
                     this.group = {name: '', description: ''};
                     //$('#manage-group-modal').modal('show');
+                },
+                toggleTerms: function() {
+                    if ($('#dorcas_terms_check').is(":checked")) {
+                        $('#register_page_submit').prop('disabled', false);
+                    } else {
+                        $('#register_page_submit').prop('disabled', true);
+                    }
                 }
             }
         });
+
+
     </script>
+    <script src="{{ cdn('apps/tabler/js/vendors/selectize.min.js') }}"></script>
+    <script type="text/javascript">
+
+        $('#dorcas-feature-select').selectize({
+            render: {
+                option: function (data, escape) {
+                    return '<div>' +
+                        '<span class="image"><img src="' + data.image + '" alt=""></span>' +
+                        '<span class="title">' + escape(data.text) + '</span>' +
+                        '</div>';
+                },
+                item: function (data, escape) {
+                    return '<div>' +
+                        '<span class="image"><img src="' + data.image + '" alt=""></span>' +
+                        escape(data.text) +
+                        '</div>';
+                }
+            }
+        });
+
+
+    </script>
+
 @endsection
