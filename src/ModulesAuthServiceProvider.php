@@ -11,10 +11,10 @@ class ModulesAuthServiceProvider extends ServiceProvider {
 		$this->loadViewsFrom(__DIR__.'/resources/views', 'modules-auth');
 		$this->publishes([
 			__DIR__.'/config/modules-auth.php' => config_path('modules-auth.php'),
-		], 'modules-auth');
+		], 'dorcas-modules');
 		$this->publishes([
 			__DIR__.'/assets' => public_path('vendor/modules-auth')
-		], 'modules-auth');
+		], 'dorcas-modules');
 	}
 
 	public function register()
