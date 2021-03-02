@@ -36,7 +36,10 @@
                     </div>
                 </form>
                 <div class="text-center text-muted">
-                    Alternatively, you can <a href="{{ route('login') }}">Login</a> OR <a href="{{ route('register') }}">Register</a>
+                    Alternatively, you can <a href="{{ route('login') }}">Login</a>
+                    @if (config('dorcas.edition','business') != "business")
+                     OR <a href="{{ route('register') }}">Register</a>
+                    @endif
                 </div>
                 </div>
 
