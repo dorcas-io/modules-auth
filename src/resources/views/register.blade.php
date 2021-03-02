@@ -25,8 +25,8 @@
                                 <label class="form-label">Which Business Features Do You Need?</label>
                                 <select name="feature_select" id="feature_select" required="" class="form-control custom-select">
                                   <option value="" data-data='{"image": "{{ cdn('images/flags/br.svg') }}"}' selected>Please Select...</option>
-                                  <option value="selling_online" data-data='{"image": "{{ cdn('images/flags/br.svg') }}"}'>Selling Online</option>
-                                  <option value="payroll" data-data='{"image": "{{ cdn('images/flags/cz.svg') }}"}'>Payroll</option>
+                                  <!-- <option value="selling_online" data-data='{"image": "{{ cdn('images/flags/br.svg') }}"}'>Selling Online</option>
+                                  <option value="payroll" data-data='{"image": "{{ cdn('images/flags/cz.svg') }}"}'>Payroll</option> -->
                                   <option value="all" data-data='{"image": "{{ cdn('images/flags/de.svg') }}"}'>Everything!</option>
                                 </select>
                             </div>
