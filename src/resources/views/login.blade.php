@@ -50,6 +50,7 @@
                         </div>
                     </div>
                 </form>
+                @if (config('dorcas.edition','business') != "business")
                 <div class="text-center text-muted">
                     <p>
                         Don't have a {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }} account yet?
@@ -57,6 +58,7 @@
                     <a href="{{ route('register') }}" class="btn btn-primary btn-block">Get Started with the {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }}</a>
                     <!-- <a href="{{ route('register') }}">Get Started with {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }}</a> -->
                 </div>
+                @endif
                 <div class="text-left text-muted">
                     <p class="my-6">
                         The <strong>{{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : 'Hub' }}</strong> is a FREE all-in-one platform that helps you automate your business e-commerce sales, finance, payroll, customer management and much more
