@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Cookie;
 use GuzzleHttp\Exception\ServerException;
 use Dorcas\ModulesAssistant\Http\Controllers\ModulesAssistantController as Assistant;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Collection;
 
 
 class ModulesAuthController extends HubController
@@ -48,9 +49,9 @@ class ModulesAuthController extends HubController
 
         //dd($mediaArray);
 
-        $hub = new HubController();
-
-        $resources = $hub->getAuthResources($request, $sdk);
+        //$hub = new HubController();
+        //$resources = $hub->getAuthResources($request, $sdk);
+        $resources = self::getAuthResources($request, $sdk);
         //dd($resources);
         //$view->with('isoCurrencies', $currencies->values()->sortBy('currency'));
 
@@ -85,6 +86,44 @@ class ModulesAuthController extends HubController
         return $mediaArray;
 
     }
+
+    public static function getAuthIndex(Request $request, Sdk $sdk, string $edition = "business")
+    {
+        $resources = self::getAuthResources($request, $sdk, "index");
+        //dd($resources[0]);
+
+        if ($resources->count()>0) {
+            $indexFilter = $resources->filter(function ($resource, $key) use($edition) {
+                //dd($resource);
+                return in_array($edition, $resource->editions);
+            });
+        }
+        //dd($indexFilter);
+
+        return $indexFilter;
+
+    }
+
+    public static function getAuthResources(Request $request, Sdk $sdk, $type="media"): ?Collection
+    {
+        $company = !empty($request->user()) && !empty($request->user()->company(true, true)) ? $request->user()->company(true, true) : null;
+        $partner = null;
+        if (!empty($request->user()->partner) && !empty($request->user()->partner['data'])) {
+            $partner = (object) $request->user()->partner['data'];
+        }
+        $partner_id = !empty($partner->id) ? $partner->id : 0;
+        $company_id = !empty($company->id) ? $company->id : rand(2000000,3000000);
+
+        $resources = Cache::remember('mau_index.'.$company_id, 86400, function () use ($partner_id, $type) {
+            $response = collect(config('modules-auth.resources.' . $type, []));
+            return $response->map(function ($resource) {
+                return (object) $resource;
+            });
+        });
+
+        return $resources;
+    }
+
 
     public function offloadMemoryConfig(Request $request, Sdk $sdk)
     {
