@@ -1,7 +1,7 @@
 @extends('layouts.tabler')
 @section('body')
 <div class="page-single">
-    <div class="container" id="index_business_page">
+    <div class="container" id="index_community_page">
 
         <div class="row justify-content-center p-3">
             <div class="text-left mb-6">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                @if (config('dorcas.edition','business') != "business")
+                @if (config('dorcas.edition','business') != "community")
 
                 @endif
 
@@ -74,7 +74,7 @@
     <script src="https://kit.fontawesome.com/25b5b2f8f7.js" crossorigin="anonymous"></script>
     <script type="text/javascript">
         var vm = new Vue({
-            el: '#index_business_page',
+            el: '#index_community_page',
             data: {
                 authIndexes: {!! json_encode(!empty($authIndexes) ? $authIndexes : []) !!},
             },

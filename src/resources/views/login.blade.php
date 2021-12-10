@@ -16,8 +16,8 @@
 
                 @include('layouts.blocks.tabler.alert')
 
-                <form class="card" action="{{ route('login') }}" method="post">
-                    {{ csrf_field() }}
+                <form class="card" action="{{ route('login-post') }}" method="POST">
+                    @csrf
                     <div class="card-body p-6">
                         <div class="card-title text-center">
                             Login to the {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }}
