@@ -18,16 +18,16 @@
                 <form class="card" action="{{ route('register') }}" method="post">
                     {{ csrf_field() }}
                     <div class="card-body p-6">
-                        <div class="card-title">Get Started with {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }}</div>
+                        <div class="card-title">Get Started with {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }} {{ $userHostString }}</div>
 
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label class="form-label">Which Business Features Do You Need?</label>
-                                <select name="feature_select" id="feature_select" required="" class="form-control custom-select">
-                                  <option value="" data-data='{"image": "{{ cdn('images/flags/br.svg') }}"}' selected>Please Select...</option>
+                                <select name="feature_select" id="feature_select" required="" readonly="readonly" class="form-control custom-select">
+                                  <!-- <option value="" data-data='{"image": "{{ cdn('images/flags/br.svg') }}"}'>Please Select...</option> -->
                                   <!-- <option value="selling_online" data-data='{"image": "{{ cdn('images/flags/br.svg') }}"}'>Selling Online</option>
                                   <option value="payroll" data-data='{"image": "{{ cdn('images/flags/cz.svg') }}"}'>Payroll</option> -->
-                                  <option value="all" data-data='{"image": "{{ cdn('images/flags/de.svg') }}"}'>Everything!</option>
+                                  <option value="all" data-data='{"image": "{{ cdn('images/flags/de.svg') }}"}' selected>Everything!</option>
                                 </select>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                             <div class="form-group col-md-6">
                                 <label class="form-label">Enter Your Business Name</label>
                                 <input type="text" class="form-control {{ $errors->has('company') ? 'is-invalid' : '' }}" name="company" id="company" value="{{ old('company') }}"
-                                placeholder="Business Name" maxlength="30" required>
+                                placeholder="e.g. ABC Limited" maxlength="30" required>
                                 @if ($errors->has('company'))
                                 <div class="invalid-feedback">{{ $errors->first('company') }}</div>
                                 @endif
@@ -91,6 +91,29 @@
                                 @endif
                             </div>
                         </div>
+
+                        @if ( (env("DORCAS_EDITION", "business") == "community" || env("DORCAS_EDITION", "business") == "enterprise") && $userHostMode == "partner" )
+                            <div class="row">{{ $userHostMode }}
+                                <label class="form-label" for="domain">Choose and reserve a unique prefix (short name) for your business <em>(e.g. abc for ABC Limited)</em></label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" required v-on:keyup="removeStatus()" placeholder="Entered desired prefix..." id="domain" name="domain" maxlength="80" v-model="domain">
+                                    <button  v-on:click.prevent="checkAvailability()" class="btn btn-primary" :class="{'btn-loading': is_querying}" type="button">Check Availability</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-status card-status-left" v-bind:class="{'bg-green': is_available, 'bg-red': !is_available && is_queried }"></div>
+                                        <div class="card-body">
+                                            <p :class="{'card-alert alert alert-success mb-0': is_available, 'card-alert alert alert-danger mb-0': !is_available && is_queried, '': is_querying }">
+                                                https://@{{ actual_domain }}.{{ get_dorcas_parent_domain() }}
+                                            </p>
+                                            <p id="domain_result" style="font-weight: bold;"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label class="custom-switch">
@@ -170,25 +193,97 @@
             data: {
                 authMedia: {!! json_encode(!empty($authMedia) ? $authMedia : []) !!},
                 group: {name: '', description: ''},
-                accept_terms: false
+                accept_terms: false,
+                domain_chosen: false,
+                domain: '',
+                is_available: false,
+                is_queried: false,
+                is_querying: false,
+                dorcasEdition:  '{!! $dorcasEdition !!}',
+                userHostMode: '{{ $userHostMode }}'
             },
             computed: {
-
+                actual_domain: function () {
+                    return this.domain.replace(' ', '').toLowerCase().trim();
+                }
             },
             mounted: function () {
                 $('#register_page_submit').prop('disabled', true);
                //console.log(this.authMedia);
            },
             methods: {
+                removeStatus: function () {
+                    this.is_available = false;
+                    this.is_queried = false;
+                    this.is_querying = false;
+                    this.domain_chosen = false;
+                    $('#domain_result').html('...');
+                },
                 createGroup: function () {
                     this.group = {name: '', description: ''};
                     //$('#manage-group-modal').modal('show');
                 },
                 toggleTerms: function() {
                     if ($('#dorcas_terms_check').is(":checked")) {
-                        $('#register_page_submit').prop('disabled', false);
+                        if (this.userHostMode == 'partner' && this.domain_chosen) {
+                            $('#register_page_submit').prop('disabled', false);
+                        } else if (this.userHostMode != 'partner') {
+                            $('#register_page_submit').prop('disabled', false);
+                        }
+                        
                     } else {
                         $('#register_page_submit').prop('disabled', true);
+                    }
+                },
+                checkAvailability: function () {
+                    var context = this;
+
+                    if (context.actual_domain == '' ) {
+                        swal("Error", "Please choose and reserve a unique prefix (short name) for your business", "warning");
+                    } else {
+                        this.is_querying =  true;
+                        $('#domain_result').html('...');
+                        axios.get("/mec/ecommerce-domains-issuances-availability-register", {
+                            params: { id: context.actual_domain }
+                        })
+                        .then(function (response) {
+                            //console.log(response);
+                            context.is_querying = false;
+                            context.is_queried = true;
+                            context.is_available = response.data.is_available;
+                            if (context.is_available) {
+                                context.domain_chosen = true;
+                                vm.toggleTerms();
+                            } else {
+                                context.domain_chosen = false;
+                                vm.toggleTerms();
+                            }
+                            //Materialize.toast(context.is_available ? 'The subdomain is available' : 'The subdomain is unavailable', 4000);
+                            $('#domain_result').html(context.is_available ? 'This choice is available' : 'The choice is unavailable');
+                        })
+                        .catch(function (error) {
+                            var message = '';
+                            if (error.response) {
+                                // The request was made and the server responded with a status code
+                                // that falls out of the range of 2xx
+                                //var e = error.response.data.errors[0];
+                                //message = e.title;
+                                var e = error.response;
+                                message = e.data.message;
+                            } else if (error.request) {
+                                // The request was made but no response was received
+                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                // http.ClientRequest in node.js
+                                message = 'The request was made but no response was received';
+                            } else {
+                                // Something happened in setting up the request that triggered an Error
+                                message = error.message;
+                            }
+                            context.is_querying = false;
+                            //Materialize.toast('Error: '+message, 4000);
+                            swal("Error", message, "warning");
+                        });
+
                     }
                 }
             }

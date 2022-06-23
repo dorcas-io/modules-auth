@@ -20,7 +20,7 @@
                     @csrf
                     <div class="card-body p-6">
                         <div class="card-title text-center">
-                            Login to the {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }}
+                            Login to the {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }} {{ $userHostString }}
                             <!-- {{ $page['login_product_name'] }} -->
                         </div>
                         <div class="form-group">
