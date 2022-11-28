@@ -53,8 +53,7 @@
                 @if (config('dorcas.edition','business') != "business")
                 <div class="text-center text-muted">
                 
-                    @if(env('DORCAS_EDITION') != 'business') 
-                   
+                    @if(env('DORCAS_EDITION') != 'bussiness') 
                     <p>
                         Don't have a {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }} account yet?
                     </p>
