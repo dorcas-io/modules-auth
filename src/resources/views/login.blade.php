@@ -6,7 +6,7 @@
         <div class="row justify-content-left p-3">
             <div class="text-left mb-6">
                 <!-- <img src="{{ cdn('/images/dorcas.jpeg') }}" class="h-6" alt=""> -->
-                <img src="{{ !empty($appUiSettings['product_logo']) ? $appUiSettings['product_logo'] : cdn('images/logo/login-logo_dorcas.png') }}" alt="" class="h-6" style="height: auto !important; width:auto !important; max-width: 250px !important; max-height: 150px !important;">
+                <img src="{{ !empty($appUiSettings['product_logo']) ? $appUiSettings['product_logo'] : env('DORCAS_PARTNER_LOGO') }}" alt="" class="h-6" style="height: auto !important; width:auto !important; max-width: 250px !important; max-height: 150px !important;">
             </div>
         </div>
 
@@ -52,13 +52,17 @@
                 </form>
                 @if (config('dorcas.edition','business') != "business")
                 <div class="text-center text-muted">
+                
+                    @if(env('DORCAS_EDITION') != 'bussiness') 
                     <p>
                         Don't have a {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }} account yet?
                     </p>
                     <a href="{{ route('register') }}" class="btn btn-primary btn-block">Get Started with the {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }}</a>
                     <!-- <a href="{{ route('register') }}">Get Started with {{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : config('app.name') }}</a> -->
+                    @endif
                 </div>
                 @endif
+              
                 <div class="text-left text-muted">
                     <p class="my-6">
                         The <strong>{{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : 'Hub' }}</strong> is a FREE all-in-one platform that helps you automate your business e-commerce sales, finance, payroll, customer management and much more
