@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="card">
-                                        <div class="card-status card-status-left" v-bind:class="{'bg-green': is_available, 'bg-red': !is_available && is_queried }"></div>
+                                        <div class="card-status card-status-left" v-bind:class="{ 'bg-green': is_available, 'bg-red': !is_available && is_queried }"></div>
                                         <div class="card-body">
                                             <p :class="{'card-alert alert alert-success mb-0': is_available, 'card-alert alert alert-danger mb-0': !is_available && is_queried, '': is_querying }">
                                                 https://@{{ actual_domain }}.{{ get_dorcas_parent_domain() }}
