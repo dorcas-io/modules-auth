@@ -56,7 +56,7 @@
         </div>
         <div class="row justify-content-center">
             <a href="{{ url('cache-health-result') }}">
-              <input type="submit" class="btn @if(in_array('false' ,$monitorHealthStatus )) btn-danger @else btn-success @endif" @if(in_array('false' ,$monitorHealthStatus )) disabled value="Ensure All Issues Are Fixed !!!" @else value="Confirm Health Status Check"@endif >
+              <input type="submit" class="btn @if(in_array('false' ,$monitorHealthStatus )) btn-danger @else btn-success @endif" @if(in_array('false' ,$monitorHealthStatus )) disabled value="Ensure All Issues Are Fixed !!!" @else value="Start Using Dorcas"@endif >
             </a>
         </div>
     </div>
