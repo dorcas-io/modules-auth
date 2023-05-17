@@ -6,7 +6,7 @@
             <div class="row justify-content-center">
                 <div class="text-center mb-6">
                     <!-- <img src="{{ cdn('/images/dorcas.jpeg') }}" class="h-6" alt=""> -->
-                    <img src="{{ !empty($appUiSettings['product_logo']) ? $appUiSettings['product_logo'] : cdn('images/logo/login-logo_dorcas.png') }}" alt="" class="h-6" style="height: auto !important; width:auto !important; max-width: 250px !important; max-height: 150px !important;">
+                    <img src="{{ !empty($appUiSettings['product_logo']) ? $appUiSettings['product_logo'] : env('DORCAS_PARTNER_LOGO') }}" alt="" class="h-6" style="height: auto !important; width:auto !important; max-width: 250px !important; max-height: 150px !important;">
                 </div>
             </div>
 

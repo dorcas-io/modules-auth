@@ -47,13 +47,8 @@ class ModulesAuthController extends HubController
             "button_link" => ""
         ];
 
-        //dd($mediaArray);
 
-        //$hub = new HubController();
-        //$resources = $hub->getAuthResources($request, $sdk);
         $resources = self::getAuthResources($request, $sdk);
-        //dd($resources);
-        //$view->with('isoCurrencies', $currencies->values()->sortBy('currency'));
 
         $media = [];
 
