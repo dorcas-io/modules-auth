@@ -109,7 +109,7 @@ class ModulesAuthController extends HubController
         $partner_id = !empty($partner->id) ? $partner->id : 0;
         $company_id = !empty($company->id) ? $company->id : rand(2000000,3000000);
 
-        $resources = Cache::remember('mau_index.'.$company_id, 86400, function () use ($partner_id, $type) {
+        $resources = Cache::remember('media_index.'.$company_id, 86400, function () use ($partner_id, $type) {
             $response = collect(config('modules-auth.resources.' . $type, []));
             return $response->map(function ($resource) {
                 return (object) $resource;

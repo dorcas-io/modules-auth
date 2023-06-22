@@ -65,7 +65,7 @@
               
                 <div class="text-left text-muted">
                     <p class="my-6">
-                        The <strong>{{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : 'Hub' }}</strong> is a FREE all-in-one platform that helps you automate your business e-commerce sales, finance, payroll, customer management and much more
+                        The <strong>{{ !empty($appUiSettings['product_name']) ? $appUiSettings['product_name'] : 'Hub' }}</strong> is a FREE all-in-one platform that helps you automate your business e-commerce, sales, customer management and much more
                     </p>
                 </div>
             </div>
