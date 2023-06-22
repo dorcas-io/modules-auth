@@ -54,8 +54,8 @@ return [
             [
                 'partner_id' => '0',
                 'resource_uuid' => 'b03447ca-2ab1-46f5-9b49-54a1ba50e900',
-                'resource_page' => ['all'],
-                'resource_module' => ['customers'],
+                'resource_page' => ['all', 'login', 'register'],
+                'resource_module' => ['all','customers'],
                 'resource_type' => 'image',
                 'resource_subtype' => '',
                 'resource_link' => '#',
@@ -69,7 +69,7 @@ return [
             [
                 'partner_id' => '0',
                 'resource_uuid' => 'b03447ca-2ab1-46f5-9b49-54a1ba50e902',
-                'resource_page' => ['login'],
+                'resource_page' => ['login', 'register', 'all'],
                 'resource_module' => ['all'],
                 'resource_type' => 'image',
                 'resource_subtype' => '',
@@ -84,7 +84,7 @@ return [
             [
                 'partner_id' => '0',
                 'resource_uuid' => 'b03447ca-2ab1-46f5-9b49-54a1ba50e900',
-                'resource_page' => ['register'],
+                'resource_page' => ['login', 'register', 'all'],
                 'resource_module' => ['customers','all'],
                 'resource_type' => 'image',
                 'resource_subtype' => '',
@@ -99,7 +99,7 @@ return [
             [
                 'partner_id' => '0',
                 'resource_uuid' => 'b03447ca-2ab1-46f5-9b49-54a1ba50e900',
-                'resource_page' => ['login'],
+                'resource_page' => ['login', 'register', 'all'],
                 'resource_module' => ['customers','all'],
                 'resource_type' => 'image',
                 'resource_subtype' => '',
