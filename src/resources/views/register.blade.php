@@ -242,6 +242,7 @@
                         swal("Error", "Please choose and reserve a unique prefix (short name) for your business", "warning");
                     } else {
                         this.is_querying =  true;
+                        context.domain = context.actual_domain;
                         $('#domain_result').html('...');
                         axios.get("/mec/ecommerce-domains-issuances-availability-register", {
                             params: { id: context.actual_domain }
