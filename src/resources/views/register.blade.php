@@ -94,7 +94,7 @@
 
                         @if ( (env("DORCAS_EDITION", "business") == "community" || env("DORCAS_EDITION", "business") == "enterprise") && $userHostMode == "partner" )
                             <div class="row">
-                                <label class="form-label" for="domain">Choose and reserve a unique prefix (short name) for your business <em>(e.g. abc for ABC Limited)</em></label>
+                                <label class="form-label" for="domain">Choose and reserve a unique prefix (short name) for your business <em>(e.g. abc for ABC Limited), WITHOUT space or symbols</em></label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control" required v-on:keyup="removeStatus()" placeholder="Entered desired prefix..." id="domain" name="domain" maxlength="80" v-model="domain">
                                     <button  v-on:click.prevent="checkAvailability()" class="btn btn-primary" :class="{'btn-loading': is_querying}" type="button">Check Availability</button>
